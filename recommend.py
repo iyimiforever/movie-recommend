@@ -22,6 +22,10 @@ class Recommend(object):
                                     encoding='utf-8')
 
     def first_recommend(self):
+        """
+        用户首次登录进行高分电影推荐
+        :return: [电影id]
+        """
         movies=self.user_score[self.user_score['score']==5]['movie_id'].ravel()
         movies=list(set(movies))
         result=random.sample(movies, 10)
@@ -30,6 +34,11 @@ class Recommend(object):
 
 
     def item_item_recommend(self,user_id):
+        """
+        根据用户打过分的电影进行相似性电影的推荐
+        :param user_id: 用户id
+        :return: [电影id]
+        """
         total_movie_list=self.item_item_mat.index
         user_score=np.array(self.user_score)
         movie_array=user_score[user_score[:,1]==user_id]
@@ -61,5 +70,5 @@ if __name__ == '__main__':
     if not os.path.exists('item_item_mat.csv'):
         ready=Ready()
     r=Recommend()
-    # r.item_item_recommend('130012755')
+    r.item_item_recommend('130012755')
     r.first_recommend()
